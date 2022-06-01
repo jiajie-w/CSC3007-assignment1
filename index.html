@@ -1,0 +1,86 @@
+<html>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Ranchers&amp;display=swap" rel="stylesheet">
+    
+    <style>
+        body{
+            text-align: center;
+            font-family: 'Rancher', cursive;
+        }
+        #headline{
+            color:#EE7752;
+        }
+        table, td, th{
+            border: solid black;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    </style>
+
+    <head>
+        <title>Assaginment 1 </title>
+    </head>
+
+    <body>
+        <div id="headline">
+            <h1> Environment PSI </h1> 
+        </div>
+
+        <div id="main">
+            
+        </div>
+        
+        <script>
+            var totalNoOfData;
+            var z= 0;
+            var x=0;
+            var national = [];
+            var central =[];
+            var west =[];
+            var east= [];
+            var north=[];
+            var south=[];
+            var metric=[];
+            fetch('https://api.data.gov.sg/v1/environment/psi').then(
+                response => {
+                    response.json().then(
+                        data =>{
+                            console.log(data);
+                            document.getElementById("headline").innerHTML = "Last updated on " + data.items[0].update_timestamp;
+                            //console.log("check this: "+ data.items[i].carpark_data);
+                            var temp ="<table><tr><th>Metric</th><th>National</th><th>central</th><th>West</th><th>East</th><th>North</th><th>South</th></tr>";
+                            console.log("starting to show data");
+                            //console.log("CHECK= "+  data.items[x].readings.co_eight_hour_max.central);
+                            keys = Object.keys(data.items[0].readings);
+                            keys.forEach(element => {
+                                console.log("CHECK= "+ data.items[0].readings[element].central);
+                                metric[x]=element;
+
+                                temp +="<tr>";
+                                temp +="<td>"+metric[x]+"</td>";
+                                temp +="<td>"+data.items[0].readings[element].national+"</td>";
+                                temp +="<td>"+data.items[0].readings[element].central+"</td>";
+                                temp +="<td>"+data.items[0].readings[element].west+"</td>";
+                                temp +="<td>"+data.items[0].readings[element].east+"</td>";
+                                temp +="<td>"+data.items[0].readings[element].north+"</td>";
+                                temp +="<td>"+data.items[0].readings[element].south+"</td></tr>";                                
+                                x++;
+                            });
+                            temp+="</table>";
+                            
+                            document.getElementById("main").innerHTML = temp;
+                            console.log("data all shown");
+                                
+                        }
+                    )
+                }
+            )
+            
+            
+
+            
+        </script>
+    </body>
+</html>
